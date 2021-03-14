@@ -23,3 +23,7 @@ The email dataset was later purchased by Leslie Kaelbling at MIT, and turned out
 
 This dataset, along with a thorough
 explanation of its origin, is available at [Here](http://www-2.cs.cmu.edu/~enron/)
+
+### Methodology
+
+This project will use natural language processing to analyze emails between Enron employees to gain deeper insights into the collapse of the company. 
