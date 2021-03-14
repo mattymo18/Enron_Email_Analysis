@@ -1,8 +1,8 @@
 Enron Email Analysis
---------------------
+====================
 
-USAGE
-=====
+# USAGE
+
 You'll need Docker and the ability to run Docker as your current user.
 
 You'll need to build the container:
@@ -15,5 +15,5 @@ This Docker container is based on rocker/verse. To run rstudio server:
       
 Then connect to the machine on port 8787.
 
-Introduction
-============
+# Introduction
+
