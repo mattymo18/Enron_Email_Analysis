@@ -1,0 +1,11 @@
+.local/*
+.rstudio/*
+Rplots.pdf*
+.config/*
+.gitconfig/*
+derived_data/*.csv
+derived_graphics/*.png
+Enron_Email_Project.Rproj
+.Rdata
+.Rhistory
+.Rproj.user/
