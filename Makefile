@@ -6,5 +6,6 @@ clean:
 	rm README_graphics/*.png
 	
 #builds final report	
-Analysis.pdf: Analysis.Rmd\
+Analysis.pdf:\
+ Analysis.Rmd
 	R -e "rmarkdown::render('Analysis.Rmd')"
