@@ -19,9 +19,9 @@ Then connect to the machine on port 8787.
 Use Makefile as recipe book for building artifacts found in derived directories. 
 
 ##### Example:
-In local project directory, to build artifact named Raleigh.Clean.csv:
+In local project directory, to build artifact `Example.csv`:
 
-    > make derived_data/Analysis.pdf
+    > make derived_data/Example.csv
     
 Use artifacts before colon as make targets. Dependencies are listed after colon.
 
