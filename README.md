@@ -15,6 +15,16 @@ This Docker container is based on rocker/verse. To run rstudio server:
       
 Then connect to the machine on port 8787.
 
+#### Make
+Use Makefile as recipe book for building artifacts found in derived directories. 
+
+##### Example:
+In local project directory, to build artifact named Raleigh.Clean.csv:
+
+    > make derived_data/Analysis.pdf
+    
+Use artifacts before colon as make targets. Dependencies are listed after colon.
+
 ### Introduction
 
 This dataset is named Enron Corpus, which was collected and prepared by the CALO Project (Cognitive Assistant that Learns and Organizes). It contains data from about 150 users, mostly senior management of Enron, organized into folders. The corpus contains a total of about 0.5M messages. This data was originally made public, and posted to the web, by the Federal Energy Regulatory Commission during its investigation.
