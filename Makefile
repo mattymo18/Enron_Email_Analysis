@@ -9,3 +9,7 @@ clean:
 Analysis.pdf:\
  Analysis.Rmd
 	R -e "rmarkdown::render('Analysis.Rmd')"
+	
+derived_data/Inbox.From.Any.To.User.csv:\
+ tidy_data.R
+	Rscript tidy_data.R
