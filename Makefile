@@ -10,6 +10,15 @@ Analysis.pdf:\
  Analysis.Rmd
 	R -e "rmarkdown::render('Analysis.Rmd')"
 	
-derived_data/Inbox.From.Any.To.User.csv:\
+
+README_graphics/Top.30.Send.Receive.Plot.png\
+derived_graphics/Top.30.Send.Receive.Plot.png:\
+ derived_data/Inbox.Outbox.csv\
+ tidy_graphics.R
+	Rscript tidy_graphics.R
+
+derived_data/Inbox.Of.User.csv\
+derived_data/Sent.By.User.csv\
+derived_data/Inbox.Outbox.csv:\
  tidy_data.R
 	Rscript tidy_data.R
