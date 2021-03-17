@@ -191,7 +191,44 @@ inbox.from.issues <- inbox.clean.temp %>%
 inbox.from.to.temp2 <- inbox.clean.temp %>% 
   filter(!grepl("<", from.mailname) & !grepl("<", to.mailname))
 
-inbox.clean.final <- rbind(inbox.from.to.temp2, inbox.from.issues, inbox.to.issues)
+inbox.clean.final <- na.omit(rbind(inbox.from.to.temp2, inbox.from.issues, inbox.to.issues))
 
-write.csv(inbox.clean.final, "derived_data/Inbox.Outbox.csv")
+#Ok last few things, we have a sitauation where people emailed more than one person
+#we can fix that by first removing, then fixing, then adding back in
+#this will be very similar to pivoting
+#it will also boost peoples numbers a bit if they emailed more than one person often
+#but the relationship between the people will remain in the network
+#so we are ok with it
+DF.Temp <- inbox.clean.final %>% 
+  filter(!grepl("@", to.mailname))
+
+DF.Issues <- inbox.clean.final %>% 
+  filter(grepl("@", to.mailname)) %>% 
+  #separate into different emails
+  separate(to.mailname, into = paste0("to.", seq(1,3)), sep = ",") %>% 
+  #make sure all the people work at enron, lets leave out number 2 right now
+  filter(grepl("@enron", to.1) & grepl("@enron", to.2)) %>% 
+  #take off the @ and enron.com
+  mutate(to.mailname1 = str_sub(to.1, start = 1, end = nchar(to.1) - 10)) %>% 
+  select(-to.1) %>% 
+  mutate(to.mailname2 = ifelse(grepl("@", to.2), str_sub(to.2, start = 1, end = nchar(to.2) - 10), to.2)) %>% 
+  select(-to.2) %>% 
+  mutate(to.mailname3 = ifelse(grepl("@", to.3), str_sub(to.3, start = 1, end = nchar(to.3) - 2), to.3)) %>% 
+  select(-to.3)
+
+To.1 <- DF.Issues %>% 
+  select(from.mailname, to.mailname1) %>% 
+  rename("to.mailname" = to.mailname1)
+To.2 <- DF.Issues %>% 
+  select(from.mailname, to.mailname2) %>% 
+  rename("to.mailname" = to.mailname2)
+To.3 <- DF.Issues %>% 
+  select(from.mailname, to.mailname3) %>% 
+  rename("to.mailname" = to.mailname3)
+DF.Fixed <- rbind(To.1, To.2, To.3)
+
+DF.Final <- rbind(DF.Temp, DF.Fixed)
+
+
+write.csv(DF.Final, "derived_data/Inbox.Outbox.csv")
 # Inbox.Outbox is messages from anyone at enron to our users and from our users to anyone at enron

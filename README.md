@@ -39,4 +39,4 @@ explanation of its origin, is available at [Here](http://www-2.cs.cmu.edu/~enron
 This project will use natural language processing to analyze emails between Enron employees to gain deeper insights into the collapse of the company. 
 
 ### Preliminary Plots
-![](README_graphics/Top.30.Send.Receive.Plot.png)
+![](README_graphics/Top.30.Send.Receive.Plot.png
