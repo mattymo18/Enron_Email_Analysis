@@ -50,9 +50,86 @@ users <- users %>%
 Inbox.Final <- left_join(DF.From.To.raw2, users) %>% 
   select(-to.username)
 
-length(unique(Inbox.Final$to.mailname))
+write.csv(Inbox.Final, "derived_data/Inbox.Of.User.csv")
 
 #########################################################################################################
+
+############################################ From our 136 users to anyone at Enron ################################
+#Filter by sent_items only
+Sent.items <- data.frame("File" = All.Files) %>% 
+  filter(grepl("/sent_items", File)) 
+
+# Create list of sender and receiver (inbox owner)
+
+DF.From.To.raw <- data.frame(
+  from = Sent.items,
+  to = apply(Sent.items, 1, function(x){readLines(x, warn = F)[4]}),
+  stringsAsFactors = F
+)
+
+
+#Let's focus on email communications inside enron.
+DF.From.To.raw2 <- DF.From.To.raw %>% 
+  filter(grepl("@enron.com", to)) %>% 
+  mutate(to.mailname = str_sub(to, 5, nchar(to) - 10)) %>% 
+  mutate(from.username = sapply(str_split(File, "/"), "[", 4)) %>% 
+  select(-c(to, File))
+
+#find the unique users that are active
+users <- data.frame(user.folder = paste0("source_data/maildir/", unique(DF.From.To.raw2$from.username)))
+users <- users %>%
+  mutate(sent = apply(users, 1, function(x){sum(grepl("sent", dir(x)))})) %>% 
+  filter(sent != 0) %>% 
+  select(-sent)
+
+# Replace user.folder name with e-mail name
+# this shows the difference between their username and their email name
+users$from.mailname <- NA
+for (i in 1:nrow(users)){
+  sentmail <- dir(paste0(users$user.folder[i], "/sent_items/"))
+  name <- readLines(paste0(users$user.folder[i], "/sent_items/", sentmail[1]), warn = F)[3]
+  name <- str_sub(name, 7, nchar(name)-10)
+  users$from.mailname[i] <- name
+}
+
+# ok so here we are going to make a list of all the emails to and from people using their email names
+# looks like we narrowed it down to about 30000 emails from our 136 people and from anyone at enron
+users <- users %>% 
+  mutate(from.username = str_sub(user.folder, 21)) %>% 
+  select(-user.folder)
+
+Sent.Final <- left_join(DF.From.To.raw2, users) %>% 
+  select(-from.username)
+
+write.csv(Sent.Final, "derived_data/Sent.By.User.csv")
+
+#################################################################################################################
+
+
+##################################### so now we wanto to join these in a meaningful way #########################
+
+#so we will want to take out our 136 from the from.mailname of inbox
+#and also our 136 from the to.mailname of sentbox
+
+# we want to do these since this information would be duplicated with a join
+# this is difficult since some of the duplicates are emails back and forth
+# so we can't just remove all duplicates. 
+
+Unique.Users.From <- data.frame(
+  "from.mailname" = unique(Inbox.Final$to.mailname)
+)
+
+Unique.Users.to <- data.frame(
+  "to.mailname" = unique(Sent.Final$from.mailname)
+)
+
+#then we can anti join
+
+Anti.inbox <- anti_join(Inbox.Final, Unique.Users.From)
+Anti.sentbox <- anti_join(Sent.Final, Unique.Users.to)
+
+Final.DF <- full_join(Anti.inbox, Anti.sentbox)
+###############################################################################################################
 
 #ok, lets try ot fix the ones that look like this, "houston <.ward@", and "pr <.palmer@"
 # it seems like they all look the same so we should be able to remove the error with the 
@@ -61,7 +138,7 @@ length(unique(Inbox.Final$to.mailname))
 #seems to be in both sender and receiver and sometimes both, lets fix that
 
 #lets deal with the both case first
-inbox.both.issues <- Inbox.Final %>% 
+inbox.both.issues <- Final.DF %>% 
   filter(grepl("<", to.mailname) & grepl("<", from.mailname)) %>% 
   #separate in half to remove the space and <
   separate(to.mailname, into = c("to.mailname.first", "to.mailname.last"), sep = " <") %>% 
@@ -82,7 +159,7 @@ inbox.both.issues <- Inbox.Final %>%
 #now before I do the next step I have to join this back in
 # and make a temp file to the rest of it can run on the set without
 # the errors on both sides
-inbox.from.to.temp1 <- Inbox.Final %>% 
+inbox.from.to.temp1 <- Final.DF %>% 
   filter(!(grepl("<", from.mailname) & grepl("<", to.mailname)))
 inbox.clean.temp <- rbind(inbox.from.to.temp1, inbox.both.issues)
 
@@ -116,4 +193,5 @@ inbox.from.to.temp2 <- inbox.clean.temp %>%
 
 inbox.clean.final <- rbind(inbox.from.to.temp2, inbox.from.issues, inbox.to.issues)
 
-write.csv(inbox.clean.final, "derived_data/Inbox.From.Any.To.User.csv")
+write.csv(inbox.clean.final, "derived_data/Inbox.Outbox.csv")
+# Inbox.Outbox is messages from anyone at enron to our users and from our users to anyone at enron
