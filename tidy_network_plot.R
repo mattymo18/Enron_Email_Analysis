@@ -36,13 +36,20 @@ edges <- edges %>%
   left_join(nodes, by = c("Destination" = "label")) %>% 
   rename(to = id)
 
-edges <- edges %>% 
+edges1 <- edges %>% 
   select(from, to, Weight)
 
-Network_igraph <- graph_from_data_frame(d = edges, vertices = nodes, directed = T)
+Network_igraph <- graph_from_data_frame(d = edges1, vertices = nodes, directed = T)
+# radian.rescale <- function(x, start=0, direction=1) {
+#   c.rotate <- function(x) (x + start) %% (2 * pi) * direction
+#   c.rotate(scales::rescale(x, c(0, 2 * pi), range(x)))
+# }
+# n <- 100
+# lab.locs <- radian.rescale(x=1:n, direction=-1, start=0)
 
 png("README_graphics/top.100.network.png", width = 2000, height = 2000)
-plot.igraph(Network_igraph, vertex.label = edges$from, vertex.size = 4, layout = layout_in_circle, 
-            edge.color = edges$Weight, edge.width = 1/15*edges$Weight, edge.curved = T)
+plot.igraph(Network_igraph, vertex.size = 4, layout = layout_in_circle, 
+            edge.color = edges1$Weight, edge.width = 1/15*edges$Weight, edge.curved = T, 
+            vertex.label = nodes$id)
 title("Top 100 Employee Email Count Network", cex.main = 6, col.main="black")
 dev.off()
