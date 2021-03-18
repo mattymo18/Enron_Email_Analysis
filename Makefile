@@ -11,6 +11,11 @@ Analysis.pdf:\
 	R -e "rmarkdown::render('Analysis.Rmd')"
 	
 
+README_graphics/top.100.network.png:\
+ derived_data/Inbox.Outbox.csv\
+ tidy_network_plot.R
+	Rscript tidy_network_plot.R
+
 README_graphics/Top.30.Send.Receive.Plot.png\
 derived_graphics/Top.30.Send.Receive.Plot.png:\
  derived_data/Inbox.Outbox.csv\

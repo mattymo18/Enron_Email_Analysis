@@ -227,7 +227,9 @@ To.3 <- DF.Issues %>%
   rename("to.mailname" = to.mailname3)
 DF.Fixed <- rbind(To.1, To.2, To.3)
 
-DF.Final <- rbind(DF.Temp, DF.Fixed)
+DF.Final <- rbind(DF.Temp, DF.Fixed) %>% 
+  filter(from.mailname != "40enron" & to.mailname != "40enron") %>% 
+  filter(from.mailname != "2.ews" & from.mailname !="40ect" & from.mailname != "40ees")
 
 
 write.csv(DF.Final, "derived_data/Inbox.Outbox.csv")
