@@ -43,6 +43,6 @@ Network_igraph <- graph_from_data_frame(d = edges, vertices = nodes, directed = 
 
 png("README_graphics/top.100.network.png", width = 2000, height = 2000)
 plot.igraph(Network_igraph, vertex.label = edges$from, vertex.size = 4, layout = layout_in_circle, 
-            edge.color = edges$Weight, edge.width = 1/50*edges$Weight, edge.curved = T)
+            edge.color = edges$Weight, edge.width = 1/15*edges$Weight, edge.curved = T)
 title("Top 100 Employee Email Count Network", cex.main = 6, col.main="black")
 dev.off()
