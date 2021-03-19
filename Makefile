@@ -13,7 +13,7 @@ Analysis.pdf:\
 # Network Plots
 derived_graphics/isolated.network.spectral.comunity.png\
 derived_graphics/top.100.network.spectral.comunity.png\
-README_graphics/top.100.network.png:\
+README_graphics/top.100.network.circle.png:\
  derived_data/Inbox.Outbox.csv\
  tidy_network_plot.R
 	Rscript tidy_network_plot.R
