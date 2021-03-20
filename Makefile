@@ -32,3 +32,8 @@ derived_data/Sent.By.User.csv\
 derived_data/Inbox.Outbox.csv:\
  tidy_data.R
 	Rscript tidy_data.R
+	
+#Isolated Data
+derived_data/Isolated.Data.csv:\
+ tidy_isolated_data.R
+	Rscript tidy_isolated_data.R

@@ -119,17 +119,29 @@ Anti.sentbox <- anti_join(Sent.Final, Unique.Users.to)
 
 Final.DF <- full_join(Anti.inbox, Anti.sentbox)
 
-DF.Isolated <- Final.DF %>% 
-  rename("Source" = from.mailname, 
-         "Destination" = to.mailname) %>% 
-  filter((Source == "tim.belden" | Source == "holden.salisbury" | Source == "grace.rodriguez" | 
+Final.DF$to.mailname <- str_trim(Final.DF$to.mailname)
+Final.DF$from.mailname <- str_trim(Final.DF$from.mailname)
+
+DF.Isolated <- Final.DF %>%
+  rename("Source" = from.mailname,
+         "Destination" = to.mailname) %>%
+filter((Source == "tim.belden" | Source == "holden.salisbury" | Source == "grace.rodriguez" |
             Source == "heather.dunton" | Source == "jeff.dasovich" | Source == "d..steffes" |
-            Source == "paul.kaufman" | Source == "j..kean" | Source == "joseph.alamo" | 
-            Source == "richard.shapiro") & 
+            Source == "paul.kaufman" | Source == "j..kean" | Source == "joseph.alamo" |
+            Source == "richard.shapiro" | Source == "alan.comnes" | Source == "m..schmidt" |
+            Source == "karen.denne" | Source == "michael.tribolet" | Source == "maureen.mcvicker" |
+            Source == "harry.kingerski" | Source == "j..noske" | Source == "sarah.novosel" |
+            Source == "l..nicolay" | Source == "susan.mara") &
            (Destination == "tim.belden" | Destination == "holden.salisbury" | Destination == "grace.rodriguez" |
               Destination == "heather.dunton" | Destination == "jeff.dasovich" | Destination == "d..steffes" |
               Destination == "paul.kaufman" | Destination == "j..kean" | Destination == "joseph.alamo" |
-              Destination == "richard.shapiro"))
+              Destination == "richard.shapiro" | Destination == "alan.comnes" | Destination == "m..schmidt" |
+              Destination == "karen.denne" | Destination == "michael.tribolet" | Destination == "maureen.mcvicker" |
+              Destination == "harry.kingerski" | Destination == "j..noske" | Destination == "sarah.novosel" |
+              Destination == "l..nicolay" | Destination == "susan.mara"))
+  
+write.csv(DF.Isolated, "derived_data/Isolated.Data.csv")
+  
 
 #now I'll be able to look for specific content within this group
 # I should add the rest of the nodes
