@@ -11,6 +11,7 @@ Analysis.pdf:\
 	R -e "rmarkdown::render('Analysis.Rmd')"
 	
 # Network Plots
+README_graphics/isolated.network.spectral.comunity.png\
 derived_graphics/isolated.network.spectral.comunity.png\
 derived_graphics/top.100.network.spectral.comunity.png\
 README_graphics/top.100.network.circle.png:\

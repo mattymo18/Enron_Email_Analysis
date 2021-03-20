@@ -42,3 +42,5 @@ This project will use natural language processing to analyze emails between Enro
 ![](README_graphics/Top.30.Send.Receive.Plot.png)
 
 ![](README_graphics/top.100.network.circle.png)
+
+![](README_graphics/isolated.network.spectral.comunity.png)

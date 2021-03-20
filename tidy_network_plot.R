@@ -112,3 +112,10 @@ plot(Network_igraph.iso, layout = layout_with_graphopt, vertex.size = 4,
      edge.width = 1/25*edges1$Weight, vertex.label = nodes$label, vertex.color = membership(Spectral.comun.iso), 
      vertex.label.cex = 3, edge.label = edges1$Weight, edge.label.cex = 3)
 dev.off()
+
+png("README_graphics/isolated.network.spectral.comunity.png", width = 2000, height = 2000)
+plot(Network_igraph.iso, layout = layout_with_graphopt, vertex.size = 4, 
+     layout = layout_with_graphopt, edge.color = "black", edge.curved = T, 
+     edge.width = 1/25*edges1$Weight, vertex.label = nodes$label, vertex.color = membership(Spectral.comun.iso), 
+     vertex.label.cex = 3, edge.label = edges1$Weight, edge.label.cex = 3)
+dev.off()
