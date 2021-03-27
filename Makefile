@@ -5,12 +5,13 @@ clean:
 	rm derived_graphics/*.png
 	rm README_graphics/*.png
 	
-#builds final report	
+# Builds final report	
 Analysis.pdf:\
  derived_graphics/Top.30.Send.Receive.Plot.png\
  README_graphics/top.100.network.circle.png\
  derived_graphics/top.100.network.spectral.comunity.png\
  derived_graphics/isolated.network.spectral.comunity.png\
+ derived_graphics/isolated.network.exchange.lineplot.png\
  Analysis.Rmd
 	R -e "rmarkdown::render('Analysis.Rmd')"
 	
@@ -37,12 +38,12 @@ derived_data/Inbox.Outbox.csv:\
  tidy_data.R
 	Rscript tidy_data.R
 	
-#Isolated Data
+# Isolated Data
 derived_data/Isolated.Data.csv:\
  tidy_isolated_data.R
 	Rscript tidy_isolated_data.R
 	
-#Isolated plots
+# Isolated plots
 derived_graphics/isolated.network.exchange.lineplot.png\
 derived_graphics/isolated.sender.receiver.Plot.png:\
  derived_data/Isolated.Data.csv\
