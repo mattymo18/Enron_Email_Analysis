@@ -1,7 +1,8 @@
 ---
 title: "Enron Analysis Final"
+subtitle: "UNC Chapel Hill, STOR 893, Spring 2021"
 author: "Matt Johnson"
-date: "3/21/2021"
+date: "3/28/2021"
 output: pdf_document
 ---
 
@@ -11,12 +12,36 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Abstarct
 --------
+Social network data from employees is essential for analyzing a company's chain of command, corporate structure and conversations relating to malfeasance. This kind of data can be useful in finding the source of corruption and fraud within a company. The collapse of Enron sent a shockwave through Wall Street and lost shareholders billions of dollars. The scandal led to new regulations to promote the accuracy of financial reporting of publicly held companies as well as billions of dollars in fines. We attempt to visualize and analyze a network of email correspondence from 175 employee user files containing incoming and outgoing emails to find suspicious activity that may have led the company to declare bankruptcy. To begin, we gather every email that was sent to or from one of our 175 users and build a social network of the top 100 paired employees by volume of email correspondence. We then isolate the largest chained network and perform leading eigenvector community detection to find densely connected subnetworks of the isolated network. Finally, we attempt keyword searches on emails within the isolated subnetworks to attempt to find the source of suspicious behavior in Enron’s upper management. The analysis resulted in finding suspicious departmental structure as well as emails containing the names of the illegal Special Purpose Vehicles (SPVs) that lead to Enron’s demise. 
 
 Introduction
 ------------
+Enron Corporation was an energy trading and utilities company based in Houston, Texas, that, in 2001, became the epicenter to one of the biggest cases of corporate malfeasance the US had ever seen. Shareholders lost an estimated 74 million dollars in the company’s collapse. Enron upper management took advantage of market-to-market accounting (MTM). MTM is an accounting practice that adjusts the value of a company to reflect the current market conditions. With this completely legal accounting technique, Enron was able to hide billions of dollars of debt from shareholders through Special Purpose Vehicles (SPVs) SPVs are small entities used by larger companies to fulfill a specific temporary job. Enron was creating SPVs to take on debt from certain projects such as building a power plant. With MTM accounting, Enron would take all the projected profit from a project and it would instantly be reflected in the eyes of the shareholders. 
+
+This analysis uses 175 Enron employee incoming and outgoing mailboxes to build a social network of important members of upper management. With this social network, we can attempt to find communication patterns among the employees as well as the source of corporate fraudulence. We will utilize R and the igraph package to visualize and examine the social network as well as use keywords to search through the contents of emails to find suspicious activity. The work in R for this project can be found [Here](https://github.com/mattymo18/Enron_Email_Analysis) 
+
 
 Methodology
 -----------
+The first step in the analysis is to clean up our user files and build a social network of communication between the 175 users we have and the rest of the company. To do this, we first find all the people that have sent an email to one of our 175 users and all the people who our 175 people have sent an email to. This gives us a very large network of people at enron emailing our users and vice versa. We want to make sure all the emails in this network are from Enron and that there are no compromised email addresses. After cleaning up this set for issues regarding “<” symbols within corrupted emails we have a final social network of about 5000 users that have either sent or received an email to or from our 175 users. Next, we want to scale this set down quite a bit since this is a very large network. To do this, we decide to only look at the top 100 pairs of people communicating with one another. We do this because we believe the people that send the most emails to one another probably work closely together. We do not care about people that send very few emails to one another, rather we want those users who are communicating often. Also, filtering this way is likely to give us important upper management at Enron since upper management will likely send more emails than hourly workers. The image below shows the top 30 senders and top 30 receivers of emails within this smaller network of users. 
 
-Results
+![](derived_graphics/Top.30.Send.Receive.Plot.png)
+
+This plot gives us an idea of the magnitude of emails we have in this set. As you can see, user d..steffes seems to send the most emails, but she does not receive many emails from others. On the flip side of that user gerald.nemec receives many emails but does not send very many. I found this to be quite interesting since it is not what would be expected. We would expect someone who receives lots of emails to respond to those emails and, in turn, send lots of emails, but that does not seem to be the case. More importantly, we see a few names of people of interest on this chart. We see users jeff.skilling, m..forney, and holden.salisbury. All three of these users seemed to have been heavily involved in the scandal according to SEC indictments and case filings. In fact, user jeff.skilling, who was CEO during the prime of the scandal, is said to be one of the masterminds behind this malfeasance. Clearly, this subset of top communicators worked in our attempt to find important people. We then take a look at the network of communication to visualize the email chains. The image below shows these top communicating pairs with line thickness indicating how many emails are sent between them. 
+
+![](README_graphics/top.100.network.circle.png)
+
+As you can see, this image is a bit difficult to follow since there are lots and lots of lines overlapping. One interesting aspect of this plot though, is the seemingly massive email conversion between user 1 and 53. After inspection, this is found to be an automated announcement email that sends many emails daily, so we can disregard this. Other than this realization, this image does not really give us too much insight into the network, rather it works as a nice image capturing the communication between the pairs. To truly analyze the network we decide to move away from the circle plot and try to find groups of people that email eachother often. To do this, we plot the network in a different way that is more representative of how these pairs actually communicate. The pot below shows the same users in the circle plot, but the nodes are moved around to better show how they interact. 
+
+![](derived_graphics/top.100.network.spectral.comunity.png)
+
+This image gives us a much better picture of how these users are communicating with one another. After inspection, we can see a large group of interconnected nodes in the middle of the plot as well as other isolated networks on the border. We can guess that the isolated self-contained networks are departments at Enron since they email eachother often. This is reinforced by the “wheel and spokes” form many of these self-contained networks take. Clearly there is a manager in the center and many workers around the outside that all email the manager. This image is very useful in analyzing the corporate structure of Enron since we can see who people are speaking with in high volumes. 
+
+We then isolated the larger interconnected network in the middle of the previous image. This was done to narrow down our search for illegal activity among the users. The large group of interconnected users in the middle seemed to contain important upper management that would have known about the malfeasance, so we turned our attention to this isolated network. This isolated network is displayed below. 
+
+![](derived_graphics/isolated.network.spectral.comunity.png)
+
+
+
+Conclusion
 -------
