@@ -28,6 +28,9 @@ In local project directory, to build artifact `Example.csv`:
     
 Use artifacts before colon as make targets. Dependencies are listed after colon.
 
+#### Data
+Data from [Here](http://www-2.cs.cmu.edu/~enron/) will need to be in source_data directory. 
+
 ### Introduction
 
 This dataset is named Enron Corpus, which was collected and prepared by the CALO Project (Cognitive Assistant that Learns and Organizes). It contains data from about 150 users, mostly senior management of Enron, organized into folders. The corpus contains a total of about 0.5M messages. This data was originally made public, and posted to the web, by the Federal Energy Regulatory Commission during its investigation.
