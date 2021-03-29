@@ -11,7 +11,7 @@ You'll need to build the container:
 
 This Docker container is based on rocker/verse. To run rstudio server:
 
-    > docker run -v `pwd`:/home/rstudio -p 8787:8787 -e PASSWORD=mypass -t enron-env
+    > docker run -v `pwd`:/home/rstudio -p 8787:8787 -e PASSWORD=mypass -t enron_env
       
 Then connect to the machine on port 8787.
 
